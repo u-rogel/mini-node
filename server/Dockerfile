@@ -4,10 +4,9 @@ RUN mkdir -p /srv/server
 WORKDIR /srv/server
 
 COPY ./package.json .
-COPY ./package-lock.json .
-
-RUN npm install
-
+COPY ./yarn.lock .
+COPY ./.env .
 COPY ./src ./src
 
-CMD ["npm", "start"]
+RUN yarn install
+
