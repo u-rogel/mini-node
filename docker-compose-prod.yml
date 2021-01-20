@@ -2,35 +2,43 @@ version: '3'
 
 services: 
   ## Server
-  server:
-    build: ./server
-    # depends_on: 
-    #   - cert-provider
-    # networks: 
-    #   - frontend
-    #   - backend
-    expose: 
-      - 8081
-    ports:
-      - 8081:8081
-    volumes: 
-      - ./server/src:/srv/server/src
-      - certs:/etc/letsencrypt/live:ro
-    command: yarn start 8081
+  # server:
+  #   build: ./server
+  #   # depends_on: 
+  #   #   - cert-provider
+  #   # networks: 
+  #   #   - frontend
+  #   #   - backend
+  #   expose: 
+  #     - 8081
+  #   ports:
+  #     - 8081:8081
+  #   volumes: 
+  #     - ./server/src:/srv/server/src
+  #     - certs:/etc/letsencrypt/live:ro
+  #   command: yarn start 8081
+
+  # ## Cert-Provider
+  # cert-provider:
+  #   image: certbot/certbot
+  #   expose: 
+  #     - 80
+  #   ports:
+  #     - 80:80
+  #   volumes: 
+  #     - certs:/etc/letsencrypt/live
+  #   command: certonly --standalone
 
   ## Cert-Provider
   cert-provider:
-    image: certbot/certbot
-    # stdin_open: true
+    image: sebble/letsencrypt-certbot-alpine
     expose: 
       - 80
     ports:
       - 80:80
-    volumes: 
-      - certs:/etc/letsencrypt/live
-    # entrypoint: /bin/sh
-    # tty: true
-    command: certonly --standalone
+    # volumes: 
+    #   - certs:/etc/letsencrypt/live
+    # command: certonly --standalone
 
 # networks: 
 #   frontend:
@@ -38,5 +46,5 @@ services:
 #   backend:
 #     internal: true
 
-volumes:
-  certs:
+# volumes:
+#   certs:
