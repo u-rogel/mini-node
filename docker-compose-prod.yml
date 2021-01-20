@@ -18,9 +18,20 @@ services:
   #     - certs:/etc/letsencrypt/live:ro
   #   command: yarn start 8081
 
+  ## Cert-Provider
+  cert-provider:
+    image: certbot/certbot
+    expose: 
+      - 80
+    ports:
+      - 80:80
+    volumes: 
+      - certs:/etc/letsencrypt/live
+    command: certonly --standalone
+
   # ## Cert-Provider
   # cert-provider:
-  #   image: certbot/certbot
+  #   image: sebble/letsencrypt-certbot-alpine
   #   expose: 
   #     - 80
   #   ports:
@@ -28,17 +39,6 @@ services:
   #   volumes: 
   #     - certs:/etc/letsencrypt/live
   #   command: certonly --standalone
-
-  ## Cert-Provider
-  cert-provider:
-    image: sebble/letsencrypt-certbot-alpine
-    expose: 
-      - 80
-    ports:
-      - 80:80
-    # volumes: 
-    #   - certs:/etc/letsencrypt/live
-    # command: certonly --standalone
 
 # networks: 
 #   frontend:
