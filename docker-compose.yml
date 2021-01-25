@@ -4,41 +4,25 @@ services:
   ## Server
   server:
     build: ./server
-    # depends_on: 
-    #   - cert-provider
-    # networks: 
-    #   - frontend
-    #   - backend
     expose: 
-      - 8081
+      - 443
     ports:
-      - 8081:8081
+      - 443:443
     volumes: 
       - ./server/src:/srv/server/src
-      - certs:/etc/ssl/certs:ro
-    command: yarn start 8081
+      - certs:/etc/letsencrypt/live:ro
+    command: yarn start 443
 
   ## Cert-Provider
   cert-provider:
-    image: pgarrett/openssl-alpine
-    stdin_open: true
-    environment:
-      - COUNTY=AU
-      - STATE=Some
-      - LOCATION=North
-      - ORGANISATION=South
-      - ISSUER_CN=Me
-      - PUBLIC_CN=localhost
-      - ISSUER_NAME=Me
-      - PUBLIC_NAME=localhost
-    volumes: 
-      - certs:/etc/ssl/certs
-
-# networks: 
-#   frontend:
-#     internal: false
-#   backend:
-#     internal: true
+    image: certbot/certbot
+    expose:
+      - 80
+    ports:
+      - 80:80
+    volumes:
+      - certs:/etc/letsencrypt/live
+    command: certonly --standalone
 
 volumes:
   certs:

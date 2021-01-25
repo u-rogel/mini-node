@@ -9,4 +9,3 @@ COPY ./.env .
 COPY ./src ./src
 
 RUN yarn install
-
